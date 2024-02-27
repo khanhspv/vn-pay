@@ -8,7 +8,7 @@ use Illuminate\View\View;
 
 class PaymentController extends Controller
 {
-    public function list (): View
+    public function list(): View
     {
         return view('payment.list');
     }
@@ -80,7 +80,7 @@ class PaymentController extends Controller
         $vnp_Url = $vnp_Url . "?" . $query;
 
         if (isset($vnp_HashSecret)) {
-            $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret);
+            $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
             // $vnpSecureHash = md5($vnp_HashSecret . $hashdata);
 //            $vnpSecureHash = hash('sha256', $vnp_HashSecret . $hashdata);
             $vnp_Url .= 'vnp_SecureHashType=SHA256&vnp_SecureHash=' . $vnpSecureHash;
@@ -92,7 +92,7 @@ class PaymentController extends Controller
     private function generateCouponCode()
     {
         $code = Payment::query()->selectRaw('MAX(CAST(payment_id AS unsigned)) as payment_id')->first();
-        return ($code ? $code->payment_id : 0) + 1;
+        return ($code->payment_id ?? 0) + 1;
     }
 
     public function returnPay(Request $request)
